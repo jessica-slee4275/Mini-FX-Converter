@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FxService } from '../fx.service';
 import { FxRatesResponse } from '../fx.model';
+import Chart from 'chart.js/auto';
 
 @Component({
   standalone: true,
@@ -45,6 +46,45 @@ export class FxChartComponent implements OnInit {
           `(average rate in last 30 days: ${this.avgRate.toFixed(3)})\n` +
           `Today rate is ${Math.abs(this.percentDiff).toFixed(4)}% lower than average.`;
       }
+      this.renderChart();
     });
   }
-}
+
+  renderChart(): void {
+  const ctx = document.getElementById('rateChart') as HTMLCanvasElement;
+
+  new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: this.dates,
+          datasets: [{
+            label: 'USD to CAD',
+            data: this.rateValues,
+            borderColor: '#007bff',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: { display: true },
+            y: { display: true }
+          },
+          elements: {
+            point: {
+              radius: 3,             
+              hitRadius: 30,       
+              hoverRadius: 10       
+            }
+          }
+        }
+      });
+    }
+  }
+  
