@@ -1,20 +1,35 @@
-<h1>fx chart component</h1>
-<!-- <div class="chart-container" style="width: 100%; max-width: 800px;">
-  <canvas id="rateChart"></canvas>
-</div> -->
 <div class="fx-container">
-  <h2>💱 USD to CAD - Last 30 Days</h2>
+  <div class="fx-card">
+    <h2>Mini FX Converter</h2>
 
-  <canvas id="rateChart"></canvas>
+    <div class="form-row">
+      <label>Base Currency:</label>
+      <select [(ngModel)]="baseCurrency" (ngModelChange)="fetchData()">
+        <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+      </select>
+    </div>
 
-  <div class="fx-summary">
-    <p>{{ resultText }}</p>
+    <div class="form-row">
+      <label>Target Currency:</label>
+      <select [(ngModel)]="targetCurrency" (ngModelChange)="fetchData()">
+        <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>Amount:</label>
+      <input type="number" [(ngModel)]="amount" >
+    </div>
+
+    <!-- <div class="fx-row" style="justify-content: flex-end;">
+      <button class="fx-button" (click)="fetchData()">Refresh</button>
+    </div> -->
+
+    <div class="fx-result">
+      <p>{{ amount }} {{ baseCurrency }} → {{ (rateValues[rateValues.length - 1] * amount) | number:'1.2-2' }} {{ targetCurrency }}</p>
+      <p>{{ resultText }}</p>
+    </div>
+
+    <canvas id="rateChart" ></canvas>
   </div>
 </div>
-
-<!-- <canvas #rateChart></canvas> 
-
-<div style="margin-top: 20px; font-family: monospace;">
-  <p>{{ resultText }}</p>
-</div>
--->
